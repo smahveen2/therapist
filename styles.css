@@ -1,0 +1,117 @@
+body {
+    font-family: 'Quicksand', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to right, #ffe5e5, #e5e5ff);
+    color: #333;
+    animation: fadeIn 1.2s ease-in-out; /* Fade-in animation */
+}
+
+/* Keyframes for fade-in effect */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+header {
+    background: #f9e1f2;
+    color: #5c468c;
+    padding: 50px 0;
+    text-align: center;
+    position: relative;
+    border-bottom: 5px solid #f0b3e4;
+}
+
+h1 {
+    margin: 0;
+    font-size: 2.5em;
+    animation: highlight 2s ease-in-out infinite; /* Highlight animation */
+}
+
+/* Keyframes for the heading highlight effect */
+@keyframes highlight {
+    0% {
+        text-shadow: 0 0 5px #fff, 0 0 10px #f6d02f, 0 0 15px #f6d02f;
+        color: #5c468c; /* Default color */
+    }
+    50% {
+        text-shadow: 0 0 10px #ffffff, 0 0 20px #f6d02f, 0 0 30px #f6d02f;
+        color: #ff6e40; /* Highlighted color */
+    }
+    100% {
+        text-shadow: 0 0 5px #fff, 0 0 10px #f6d02f, 0 0 15px #f6d02f;
+        color: #5c468c; /* Default color */
+    }
+}
+
+.container {
+    padding: 0 20px;
+}
+
+.button {
+    background-color: #ffffff;
+    color: #5c468c;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.button:hover {
+    background-color: #f0f0f0;
+    transform: scale(1.05);
+}
+
+.services {
+    margin: 40px auto;
+    max-width: 800px;
+    text-align: center;
+}
+
+.service-cards {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px auto;
+    flex-wrap: wrap;
+}
+
+.service-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    width: 28%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+    margin: 10px;
+    border-left: 5px solid #82c0ff; /* Pastel blue left border */
+    animation: fadeIn 0.5s; /* Fade-in animation */
+}
+
+.service-card:hover {
+    transform: translateY(-5px) scale(1.05); /* Lift effect */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+.service-card i {
+    font-size: 50px;
+    color: #f57c20; /* Pastel orange color */
+    transition: color 0.3s;
+}
+
+.service-card:hover i {
+    color: #d28529; /* Darker orange on hover */
+}
+
+footer {
+    text-align: center;
+    margin: 40px 0;
+    font-size: 0.9em;
+}

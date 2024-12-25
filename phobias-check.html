@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phobia Checker</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500&display=swap">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(to right, #ffdde1, #e1e9ff);
+            color: #333;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        #phobiaCheck {
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: auto;
+        }
+
+        .question {
+            display: none;
+            margin-bottom: 15px;
+        }
+
+        button[type="submit"], #startBtn {
+            background-color: #ff7f50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        button[type="submit"]:hover, #startBtn:hover {
+            background-color: #ff6347;
+        }
+
+        #results {
+            margin-top: 20px;
+            display: none;
+        }
+
+        #recommendations {
+            list-style-type: disc;
+            margin-left: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Phobia Checker</h1>
+        <p>Understand your feelings and take action.</p>
+    </header>
+
+    <div id="phobiaCheck">
+        <button id="startBtn">Start Questionnaire</button>
+        <form id="questionnaireForm" style="display: none;">
+            <div class="question">
+                <label>1. How often do you feel anxious about specific situations or objects?</label>
+                <select name="question1" required>
+                    <option value="0">Never</option>
+                    <option value="1">Sometimes</option>
+                    <option value="2">Often</option>
+                    <option value="3">Very Often</option>
+                </select>
+            </div>
+            <div class="question">
+                <label>2. Do you avoid places or situations due to fear?</label>
+                <select name="question2" required>
+                    <option value="0">Never</option>
+                    <option value="1">Sometimes</option>
+                    <option value="2">Often</option>
+                    <option value="3">Very Often</option>
+                </select>
+            </div>
+            <div class="question">
+                <label>3. How often do you experience physical symptoms (like sweating, shaking) in fearful situations?</label>
+                <select name="question3" required>
+                    <option value="0">Never</option>
+                    <option value="1">Sometimes</option>
+                    <option value="2">Often</option>
+                    <option value="3">Very Often</option>
+                </select>
+            </div>
+            <div class="question">
+                <label>4. Do you have recurrent fears about particular things (like heights, spiders, etc.)?</label>
+                <select name="question4" required>
+                    <option value="0">Never</option>
+                    <option value="1">Sometimes</option>
+                    <option value="2">Often</option>
+                    <option value="3">Very Often</option>
+                </select>
+            </div>
+            <div class="question">
+                <label>5. How often do your fears interfere with your daily life?</label>
+                <select name="question5" required>
+                    <option value="0">Never</option>
+                    <option value="1">Sometimes</option>
+                    <option value="2">Often</option>
+                    <option value="3">Very Often</option>
+                </select>
+            </div>
+            <div class="question">
+                <label>6. Do you feel helpless in the face of your fears?</label>
+                <select name="question6" required>
+                    <option value="0">Never</option>
+                    <option value="1">Sometimes</option>
+                    <option value="2">Often</option>
+                    <option value="3">Very Often</option>
+                </select>
+            </div>
+            <div class="question">
+                <label>7. How often do you think about your phobia when you're not in the fearful situation?</label>
+                <select name="question7" required>
+                    <option value="0">Never</option>
+                    <option value="1">Sometimes</option>
+                    <option value="2">Often</option>
+                    <option value="3">Very Often</option>
+                </select>
+            </div>
+            <div class="question">
+                <label>8. Do your friends or family express concern about your fears?</label>
+                <select name="question8" required>
+                    <option value="0">Never</option>
+                    <option value="1">Sometimes</option>
+                    <option value="2">Often</option>
+                    <option value="3">Very Often</option>
+                </select>
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+
+        <div id="results">
+            <h3>Your Phobia Level: <span id="percentageScore"></span>%</h3>
+            <h4>Recommended Activities:</h4>
+            <ul id="recommendations"></ul>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('startBtn').addEventListener('click', function() {
+            // Hide the start button and display the questionnaire
+            this.style.display = 'none';
+            document.getElementById('questionnaireForm').style.display = 'block';
+            document.querySelectorAll('.question').forEach(q => q.style.display = 'block');
+        });
+
+        document.getElementById('questionnaireForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
+            
+            let totalScore = 0;
+            const questionsCount = this.length;
+            
+            // Calculate the total score from the answers
+            for (let i = 0; i < questionsCount; i++) {
+                if (this[i].value) {
+                    totalScore += parseInt(this[i].value);
+                }
+            }
+
+            const maxScore = questionsCount * 3; // Maximum score is 3 per question
+            const percentage = ((totalScore / maxScore) * 100).toFixed(2); // Convert to percentage
+
+            // Display the results
+            document.getElementById('percentageScore').innerText = percentage;
+            document.getElementById('results').style.display = 'block';
+            
+            // Recommendations based on the score
+            const recommendationsList = document.getElementById('recommendations');
+            recommendationsList.innerHTML = ''; // Clear previous recommendations
+            
+            let recommendations = [];
+
+            if (percentage < 33) {
+                recommendations = ['Focus on relaxation techniques.', 'Gradually expose yourself to what you fear.', 'Talk to someone you trust about your fears.'];
+            } else if (percentage < 66) {
+                recommendations = ['Consider professional help.', 'Join a support group.', 'Practice breathing exercises in safe spaces.'];
+            } else {
+                recommendations = ['Seek therapy from a licensed counselor.', 'Explore cognitive-behavioral therapy (CBT).', 'Discuss your situation with a healthcare professional.'];
+            }
+
+            // Populate the recommendations list
+            recommendations.forEach(activity => {
+                const li = document.createElement('li');
+                li.textContent = activity;
+                recommendationsList.appendChild(li);
+            });
+        });
+    </script>
+</body>
+</html>

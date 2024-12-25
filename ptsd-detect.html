@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PTSD Detection Questionnaire</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500&display=swap">
+    
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(to right, #ffe5e5, #e5e5ff);
+            color: #333;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        #mainContent {
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: auto;
+        }
+
+        button {
+            background-color: #62c462;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin: 10px 0;
+        }
+        
+        button:hover {
+            background-color: #4cae4c;
+        }
+
+        .question {
+            margin-bottom: 15px;
+        }
+
+        #results {
+            display: none;
+            margin-top: 20px;
+        }
+
+        #recommendations {
+            list-style-type: disc;
+            margin-left: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>PTSD Detection Questionnaire</h1>
+        <p>Please answer the following questions.</p>
+    </header>
+
+    <div id="mainContent">
+        <form id="ptsdForm">
+            <div class="question">
+                <label>1. Have you experienced or witnessed a traumatic event?</label>
+                <select name="question1" required>
+                    <option value="0">Never</option>
+                    <option value="1">Sometimes</option>
+                    <option value="2">Often</option>
+                    <option value="3">Very Often</option>
+                </select>
+            </div>
+            <div class="question">
+                <label>2. Do you experience flashbacks or intrusive memories of the event?</label>
+                <select name="question2" required>
+                    <option value="0">Never</option>
+                    <option value="1">Sometimes</option>
+                    <option value="2">Often</option>
+                    <option value="3">Very Often</option>
+                </select>
+            </div>
+            <div class="question">
+                <label>3. Have you been avoiding reminders of the trauma?</label>
+                <select name="question3" required>
+                    <option value="0">Never</option>
+                    <option value="1">Sometimes</option>
+                    <option value="2">Often</option>
+                    <option value="3">Very Often</option>
+                </select>
+            </div>
+            <div class="question">
+                <label>4. Do you experience intense negative emotions when reminded of the trauma?</label>
+                <select name="question4" required>
+                    <option value="0">Never</option>
+                    <option value="1">Sometimes</option>
+                    <option value="2">Often</option>
+                    <option value="3">Very Often</option>
+                </select>
+            </div>
+            <div class="question">
+                <label>5. Are you more irritable or angry after the trauma?</label>
+                <select name="question5" required>
+                    <option value="0">Never</option>
+                    <option value="1">Sometimes</option>
+                    <option value="2">Often</option>
+                    <option value="3">Very Often</option>
+                </select>
+            </div>
+            <div class="question">
+                <label>6. Have you lost interest in activities you once enjoyed?</label>
+                <select name="question6" required>
+                    <option value="0">Never</option>
+                    <option value="1">Sometimes</option>
+                    <option value="2">Often</option>
+                    <option value="3">Very Often</option>
+                </select>
+            </div>
+            <div class="question">
+                <label>7. Do you find it difficult to trust others since the trauma?</label>
+                <select name="question7" required>
+                    <option value="0">Never</option>
+                    <option value="1">Sometimes</option>
+                    <option value="2">Often</option>
+                    <option value="3">Very Often</option>
+                </select>
+            </div>
+            <div class="question">
+                <label>8. Do you avoid discussing the traumatic event with others?</label>
+                <select name="question8" required>
+                    <option value="0">Never</option>
+                    <option value="1">Sometimes</option>
+                    <option value="2">Often</option>
+                    <option value="3">Very Often</option>
+                </select>
+            </div>
+            <button type="submit">Submit PTSD Assessment</button>
+        </form>
+
+        <div id="results">
+            <h3>Your Level: <span id="percentageScore"></span>%</h3>
+            <h4>Recommended Activities:</h4>
+            <ul id="recommendations"></ul>
+        </div>
+    </div>
+
+    <script>
+        // Handle PTSD Submission
+        document.getElementById('ptsdForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            let totalScore = calculateScore(this);
+            showResults(totalScore);
+        });
+
+        function calculateScore(form) {
+            let totalScore = 0;
+            const questionsCount = form.length;
+            
+            for (let i = 0; i < questionsCount; i++) {
+                if (form[i].value) {
+                    totalScore += parseInt(form[i].value);
+                }
+            }
+            return totalScore;
+        }
+
+        function showResults(totalScore) {
+            const questionsCount = 8; // 8 questions
+            const maxScore = questionsCount * 3; // Maximum score is 3 per question
+            const percentage = ((totalScore / maxScore) * 100).toFixed(2);
+
+            document.getElementById('percentageScore').innerText = percentage;
+            document.getElementById('results').style.display = 'block';
+
+            const recommendationsList = document.getElementById('recommendations');
+            recommendationsList.innerHTML = ''; // Clear previous recommendations
+            
+            let recommendations = [];
+
+            // Generate recommendations based on the score
+            if (percentage < 33) {
+                recommendations = ['Practice grounding exercises to manage anxiety.', 'Connect with loved ones to share your feelings.', 'Engage in creative activities like art or writing.'];
+            } else if (percentage < 66) {
+                recommendations = ['Consider therapy focused on trauma.', 'Join support groups for trauma survivors.', 'Explore coping strategies that work for you.'];
+            } else {
+                recommendations = ['Seek immediate professional help.', 'Consider contacting crisis support services.', 'Explore trauma-focused therapy options.'];
+            }
+
+            // Populate the recommendations list
+            recommendations.forEach(activity => {
+                const li = document.createElement('li');
+                li.textContent = activity;
+                recommendationsList.appendChild(li);
+            });
+        }
+    </script>
+</body>
+</html>
